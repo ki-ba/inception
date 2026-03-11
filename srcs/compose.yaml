@@ -1,0 +1,7 @@
+services:
+  nginx:
+    build: nginx/
+    # container_name:nginx_container
+  # volumes:
+    ports:
+      - "80:80"
