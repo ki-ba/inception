@@ -1,6 +1,7 @@
 services:
   nginx:
-    build: nginx/
+    init: true
+    build: requirements/nginx/
     # container_name:nginx_container
   # volumes:
     ports:
