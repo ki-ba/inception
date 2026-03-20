@@ -3,22 +3,26 @@ NGINX_DIR=srcs/requirements/nginx
 MARIADB_DIR=srcs/requirements/mariadb
 WORDPRESS_DIR=srcs/requirements/wordpress
 
-.PHONY: all
-all: 
-	docker compose -f $(COMPOSE_FILE) up
+.PHONY: up 
+up: 
+	docker compose -f $(COMPOSE_FILE) up -d
 
-.PHONY: stop
-stop:
+.PHONY: down
+down:
 	docker compose -f $(COMPOSE_FILE) down
 
-.PHONY: status
+.PHONY: ps
 status:
 	docker compose -f $(COMPOSE_FILE) ps
 
 .PHONY: build
 build:
-	docker build -t nginx $(NGINX_DIR)
+	docker compose build -f $(COMPOSE_FILE)
 
 .PHONY: clean
 clean:
 	docker system prune -af
+
+.PHONY: re
+re: clean
+	$(MAKE) build

@@ -1,8 +1,8 @@
 services:
   nginx:
+    container_name: nginx
     init: true
     build: requirements/nginx/
-    # container_name:nginx_container
-  # volumes:
     ports:
       - "80:80"
+    restart: unless-stopped
