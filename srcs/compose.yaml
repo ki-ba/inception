@@ -1,6 +1,5 @@
 services:
   nginx:
-    init: true
     depends_on:
       - wordpress
     container_name: nginx
@@ -10,18 +9,19 @@ services:
     ports:
       - '80:80'
     restart: unless-stopped
-  db:
-    init: true
+    volumes:
+      - wp_data:/var/www/html
+    networks:
+      - netception
+  mariadb:
     container_name: mariadb
     build:
       context: requirements/mariadb/
       dockerfile: Dockerfile
     volumes:
-      - db_data:/var/lib/mysql
+      - mariadb_data:/var/lib/mysql
     networks:
-      - mariadb_network
-    ports:
-      - '3307:3306'
+      - netception
     restart: unless-stopped
     environment:
       MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
@@ -29,15 +29,12 @@ services:
       MARIADB_USER: ${MARIADB_USER}
       MARIADB_PASSWORD: ${MARIADB_PASSWORD}
   wordpress:
-    init: true
     depends_on:
-      - db
+      - mariadb
     container_name: wordpress
     build:
       context: requirements/wordpress/
       dockerfile: Dockerfile
-    ports:
-      - '8000:80'
     restart: unless-stopped
     volumes:
       - wp_data:/var/www/html
@@ -45,8 +42,10 @@ services:
       WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
       WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
       WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+    networks:
+      - netception
 volumes:
-  db_data: {}
+  mariadb_data: {}
   wp_data: {}
 networks:
-  mariadb_network:
+  netception:
