@@ -24,6 +24,12 @@ services:
     networks:
       - netception
     restart: unless-stopped
+    # healthcheck:
+    #   test: ["CMD-SHELL", "mariadb-admin ping -h 127.0.0.1 -p$MARIADB_ROOT_PASSWORD || exit 1"]
+    #   interval: 5s
+    #   timeout: 5s
+    #   retries: 20      
+    # env_file: .env
     environment:
       MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
       MARIADB_DATABASE: ${MARIADB_DATABASE}
@@ -40,9 +46,9 @@ services:
     volumes:
       - wp_data:/var/www/html
     environment:
-      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
-      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
-      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      MARIADB_DATABASE: ${MARIADB_DATABASE}
+      MARIADB_USER: ${MARIADB_USER}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD}
     networks:
       - netception
 volumes:
