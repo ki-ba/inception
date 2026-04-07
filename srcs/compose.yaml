@@ -1,3 +1,4 @@
+name: inception
 services:
   nginx:
     depends_on:
