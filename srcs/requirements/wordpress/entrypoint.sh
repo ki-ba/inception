@@ -14,21 +14,38 @@ if [ ! -f /var/www/html/wp-cli.phar ]; then
   curl -LO https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 fi
 
+if [ ! -L /usr/bin/wp ]; then
+	ln -s /var/www/html/wp-cli.phar /usr/bin/wp 
+fi
+
 chmod +x /var/www/html/wp-cli.phar
 
-until nc -z mariadb 3306; do
-  echo "Waiting for MariaDB..."
-  sleep 2
-done
+# until php /usr/bin/wp db check --path=/var/www/html/wordpress --allow-root >/dev/null 2>&1; do
+#   echo "Waiting for WordPress DB access..."
+#   sleep 2
+# done
 
 if [ ! -f /var/www/html/wordpress/wp-config.php ]; then
-  php /var/www/html/wp-cli.phar config create \
+  php /usr/bin/wp config create \
     --path=/var/www/html/wordpress \
-    --dbname="$MARIADB_DATABASE" \
-    --dbuser="$MARIADB_USER" \
-    --dbpass="$MARIADB_PASSWORD" \
+    --dbname="${MARIADB_DATABASE}" \
+    --dbuser="${MARIADB_USER}" \
+    --dbpass="${MARIADB_PASSWORD}" \
     --dbhost="mariadb:3306" \
-    --skip-check \
+    --allow-root
+
+fi
+
+  if ! php /var/www/html/wp-cli.phar core is-installed --path=/var/www/html/wordpress --allow-root >/dev/null 2>&1; then
+  php /usr/bin/wp core install \
+    --path=/var/www/html/wordpress \
+    --url="http://kbarru.42.fr" \
+    --title="kibz" \
+    --admin_user="${WP_ADMIN}" \
+    --admin_password="${WP_ADMIN_PASS}" \
+    --admin_email="${WP_ADMIN_EMAIL}" \
+    --locale=fr_FR \
+    --skip-email \
     --allow-root
 fi
 

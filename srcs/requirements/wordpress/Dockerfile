@@ -6,6 +6,7 @@ php82 \
 php82-fpm \
 php82-mysqli \
 netcat-openbsd \
+php82-iconv \
 php82-phar
 
 RUN ln -s /usr/bin/php82 /usr/bin/php
