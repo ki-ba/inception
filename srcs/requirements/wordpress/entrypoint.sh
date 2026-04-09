@@ -26,6 +26,7 @@ chmod +x /var/www/html/wp-cli.phar
 # done
 
 if [ ! -f /var/www/html/wordpress/wp-config.php ]; then
+  echo "initializing wp-config..."
   php /usr/bin/wp config create \
     --path=/var/www/html/wordpress \
     --dbname="${MARIADB_DATABASE}" \
@@ -34,9 +35,11 @@ if [ ! -f /var/www/html/wordpress/wp-config.php ]; then
     --dbhost="mariadb:3306" \
     --allow-root
 
+
 fi
 
-  if ! php /var/www/html/wp-cli.phar core is-installed --path=/var/www/html/wordpress --allow-root >/dev/null 2>&1; then
+if ! php /var/www/html/wp-cli.phar core is-installed --path=/var/www/html/wordpress --allow-root >/dev/null 2>&1; then
+  echo "Installing wordpress..."
   php /usr/bin/wp core install \
     --path=/var/www/html/wordpress \
     --url="http://kbarru.42.fr" \
@@ -47,6 +50,11 @@ fi
     --locale=fr_FR \
     --skip-email \
     --allow-root
+  echo "Creating contributor..."
+  php /usr/bin/wp user create eval no@than.ks \
+    --path=/var/www/html/wordpress \
+    --role=subscriber \
+    --user_pass=${USER_PASSWORD}
 fi
 
 exec /usr/sbin/php-fpm82 -F

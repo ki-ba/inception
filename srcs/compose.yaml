@@ -54,6 +54,8 @@ services:
       WP_ADMIN: ${WP_ADMIN}
       WP_ADMIN_PASS: ${WP_ADMIN_PASS}
       WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
+      USER_PASSWORD: ${USER_PASSWORD}
+      USER_LOGIN: ${USER_LOGIN}
     networks:
       - netception
 volumes:
