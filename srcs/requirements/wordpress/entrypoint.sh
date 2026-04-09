@@ -51,7 +51,7 @@ if ! php /var/www/html/wp-cli.phar core is-installed --path=/var/www/html/wordpr
     --skip-email \
     --allow-root
   echo "Creating contributor..."
-  php /usr/bin/wp user create eval no@than.ks \
+  php /usr/bin/wp user create ${USER_LOGIN} ${USER_EMAIL} \
     --path=/var/www/html/wordpress \
     --role=subscriber \
     --user_pass=${USER_PASSWORD}
