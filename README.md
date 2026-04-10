@@ -39,4 +39,78 @@ In contrast, **bind mounts** allow you to mount a file or directory from the hos
 
 ## Instructions
 
+### Requirements
+
+Before starting the project, make sure you have:
+- Docker installed,
+- Docker Compose installed,
+- the project files available locally,
+- a valid `.env` file containing the required environment variables.
+
+### Environment variables
+
+The stack expects the following variables:
+
+- `MARIADB_ROOT_PASSWORD`
+- `MARIADB_DATABASE`
+- `MARIADB_USER`
+- `MARIADB_PASSWORD`
+- `WP_ADMIN`
+- `WP_ADMIN_PASS`
+- `WP_ADMIN_EMAIL`
+- `USER_LOGIN`
+- `USER_PASSWORD`
+- `USER_EMAIL`
+
+### Launch the project
+
+From the project root, run:
+
+```bash
+make build
+```
+
+This will build the images and start all containers in detached mode.
+
+### Useful commands
+
+- `make up` to start the stack without rebuilding.
+- `make down` to stop and remove the containers.
+- `make stop` to stop the containers.
+- `make ps` to display running containers.
+- `make clean` to stop the stack and remove volumes.
+- `make restart` to restart the stack.
+- `make re` to clean and rebuild the project.
+- `make nuke` to stop everything and prune unused Docker resources.
+
+### Access the website
+
+Once the stack is running, the website should be available at:
+
+```text
+https://kbarru.42.fr
+```
+
+If necessary, configure your local hosts file so that the domain points to `127.0.0.1`.
+
 ## Resources
+
+### Main services
+
+- **Nginx**: reverse proxy and HTTPS web server.
+- **WordPress**: CMS application running on PHP-FPM.
+- **MariaDB**: database server for WordPress.
+
+### Project resources
+
+- Docker and Docker Compose documentation.
+- WordPress official documentation.
+- MariaDB official documentation.
+- Nginx official documentation.
+
+### Notes
+
+- WordPress data is stored in the `wp_data` volume.
+- MariaDB data is stored in the `mariadb_data` volume.
+- The containers communicate through the `netception` Docker network.
+- Nginx uses a self-signed TLS certificate generated during image build.
