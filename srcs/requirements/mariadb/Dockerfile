@@ -7,6 +7,4 @@ COPY ./entrypoint.sh /usr/entrypoint.sh
 
 RUN chmod +x /usr/entrypoint.sh
 
-EXPOSE 3306
-
 ENTRYPOINT ["/usr/entrypoint.sh"]

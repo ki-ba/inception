@@ -7,8 +7,9 @@ services:
     build:
       context: requirements/nginx/
       dockerfile: Dockerfile
+    image: nginx
+    pull_policy: never
     ports:
-      - '80:80'
       - '443:443'
     restart: unless-stopped
     volumes:
@@ -20,6 +21,8 @@ services:
     build:
       context: requirements/mariadb/
       dockerfile: Dockerfile
+    image: mariadb
+    pull_policy: never
     volumes:
       - mariadb_data:/var/lib/mysql
     networks:
@@ -44,6 +47,8 @@ services:
     build:
       context: requirements/wordpress/
       dockerfile: Dockerfile
+    image: wordpress
+    pull_policy: never
     restart: unless-stopped
     volumes:
       - wp_data:/var/www/html
